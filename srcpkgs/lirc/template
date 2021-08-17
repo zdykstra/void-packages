@@ -1,0 +1,33 @@
+# Template file for 'lirc'
+pkgname=lirc
+version=0.10.2
+revision=1
+build_style=gnu-configure
+configure_args="--prefix=/usr --sbindir=/usr/bin --sysconfdir=/etc \
+ --localstatedir=/var --enable-uinput --enable-devinput --enable-silent-rules"
+hostmakedepends="pkg-config"
+makedepends="libxslt python3 python3-devel python3-yaml python3-setuptools \
+ libusb-devel libusb-compat-devel eudev-libudev-devel"
+conf_files="/etc/lirc/lirc_options.conf /etc/lirc/lircd.conf \
+ /etc/lirc/lircmd.conf /etc/lirc/irexec.lircrc"
+short_desc="Linux Infrared Remote Control utilities"
+maintainer="Zach Dykstra <dykstra.zachary@gmail.com>"
+license="GPL-2.0-or-later"
+homepage="http://www.lirc.org"
+distfiles="${SOURCEFORGE_SITE}/${pkgname}/${pkgname}-${version}.tar.bz2"
+checksum=3d44ec8274881cf262f160805641f0827ffcc20ade0d85e7e6f3b90e0d3d222a
+
+system_accounts="_lirc"
+_lirc_groups="input"
+
+post_install() {
+	vsv lircd
+	vsv irexec
+	vinstall contrib/60-lirc.rules 644 usr/lib/udev/rules.d/
+
+	# ancient project, useless docs
+	rm -rf ${DESTDIR}/usr/share/doc/lirc
+
+	# this file needs to be generated against the running kernel
+	rm -f ${DESTDIR}/etc/lirc/lircd.conf.d/devinput.lircd.conf
+}

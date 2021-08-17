@@ -1,0 +1,5 @@
+#!/bin/sh
+
+install -d -m0755 -o _lirc -g input /var/run/lirc
+
+exec lircd -n -e _lirc
