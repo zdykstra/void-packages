@@ -1,0 +1,38 @@
+# Template file for 'microsoft-edge-stable'
+pkgname=microsoft-edge-stable
+version=119.0.2151.97
+revision=1
+archs="x86_64"
+hostmakedepends="bsdtar tar xz"
+depends="xdg-utils"
+short_desc="Microsoft Edge browser - stable branch"
+maintainer="Zach Dykstra <dykstra.zachary@gmail.com>"
+license="custom:Proprietary"
+homepage="https://www.microsoftedgeinsider.com/en-us/"
+distfiles="https://packages.microsoft.com/repos/edge/pool/main/m/${pkgname}/${pkgname}_${version}-1_amd64.deb"
+checksum=504224d2e893d6c963c2fa5231c4877566fe5bf26f7154f2c718dd66e3bfca7d
+restricted=yes
+repository="nonfree"
+nopie=yes
+nostrip=yes
+
+do_extract() {
+	ar p ${XBPS_SRCDISTDIR}/${pkgname}-${version}/${pkgname}_${version}-1_amd64.deb data.tar.xz | bsdtar --extract --xz -f - -C .
+}
+
+do_install() {
+	vinstall usr/share/applications/microsoft-edge.desktop 644 usr/share/applications
+
+	vcopy opt/ opt
+
+	for size in 16 24 32 48 64 128 256 ; do
+		vinstall opt/microsoft/msedge/product_logo_${size}.png 644 usr/share/icons/hicolor/${size}x${size}/apps microsoft-edge.png
+	done
+
+	vmkdir usr/bin
+	ln -s ../../opt/microsoft/msedge/microsoft-edge ${DESTDIR}/usr/bin/microsoft-edge
+
+	vdoc usr/share/doc/microsoft-edge-stable/changelog.gz
+	vlicense usr/share/doc/microsoft-edge-stable/changelog.gz
+	vman usr/share/man/man1/microsoft-edge-stable.1.gz
+}
