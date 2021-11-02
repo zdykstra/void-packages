@@ -1,0 +1,38 @@
+# Template file for 'microsoft-edge-dev'
+pkgname=microsoft-edge-dev
+version=121.0.2248.1
+revision=1
+archs="x86_64"
+hostmakedepends="bsdtar tar xz"
+depends="xdg-utils"
+short_desc="Microsoft Edge browser - development branch"
+maintainer="Zach Dykstra <dykstra.zachary@gmail.com>"
+license="custom:Proprietary"
+homepage="https://www.microsoftedgeinsider.com/en-us/"
+distfiles="https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-dev/${pkgname}_${version}-1_amd64.deb"
+checksum=b9d50e59d9ffe69243c43b2fd08cdf092bfa768a2d523ade7084ca1ad3b26c4f
+restricted=yes
+repository="nonfree"
+nopie=yes
+nostrip=yes
+
+do_extract() {
+	ar p ${XBPS_SRCDISTDIR}/${pkgname}-${version}/${pkgname}_${version}-1_amd64.deb data.tar.xz | bsdtar --extract --xz -f - -C .
+}
+
+do_install() {
+	vinstall usr/share/applications/microsoft-edge-dev.desktop 644 usr/share/applications
+
+	vcopy opt/ opt
+
+	for size in 16 24 32 48 64 128 256 ; do
+	  vinstall opt/microsoft/msedge-dev/product_logo_${size}_dev.png 644 usr/share/icons/hicolor/${size}x${size}/apps microsoft-edge-dev.png
+	done
+
+	vmkdir usr/bin
+	ln -s ../../opt/microsoft/msedge-dev/microsoft-edge-dev ${DESTDIR}/usr/bin/microsoft-edge-dev
+
+	vdoc usr/share/doc/microsoft-edge-dev/changelog.gz
+	vlicense usr/share/doc/microsoft-edge-dev/changelog.gz
+	vman usr/share/man/man1/microsoft-edge-dev.1.gz
+}

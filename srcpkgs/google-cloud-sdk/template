@@ -1,0 +1,44 @@
+# Template file for 'google-cloud-sdk'
+pkgname=google-cloud-sdk
+version=372.0.0
+revision=1
+#archs="i686 x86_64"
+wrksrc="${pkgname}"
+#create_wrksrc=yes
+#configure_args=""
+#make_build_args=""
+#make_install_args=""
+#conf_files=""
+#make_dirs="/var/log/dir 0755 root root"
+hostmakedepends="python3"
+makedepends=""
+depends="python3 python3-crcmod"
+short_desc="Command-line tools for the Google Cloud Platform (gcloud/gsutil/bq)"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
+license="Apache-2.0"
+homepage="https://cloud.google.com/sdk/"
+distfiles="https://dl.google.com/dl/cloudsdk/release/downloads/for_packagers/linux/${pkgname}_${version}.orig.tar.gz"
+checksum=b0a65a97899bbd35144ab35f6173c00db6789ca4905f2db2d3dc6d43e9526fd6
+python_version=3
+
+do_install() {
+	vmkdir /usr/bin
+	vmkdir /usr/share
+	vmkdir /opt
+	cp -r ${PWD} ${DESTDIR}/opt/
+
+	cd ${DESTDIR}/opt/${pkgname}
+
+	python $PWD/bin/bootstrapping/install.py \
+		--usage-reporting False \
+		--path-update False \
+		--bash-completion False \
+		--additional-components ""
+
+	rm -r platform/bundledpythonunix bin/anthoscli .install
+
+	find . -name '__pycache__' -type d -exec rm -rf {} +
+	mv help/man ${DESTDIR}/usr/share	
+	
+	ln -sfr bin/bq bin/gsutil bin/gcloud bin/docker-credential-gcloud ${DESTDIR}/usr/bin
+}
