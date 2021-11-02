@@ -1,0 +1,208 @@
+diff -urN --color a/lib/third_party/dns/namedict.py b/lib/third_party/dns/namedict.py
+--- a/lib/third_party/dns/namedict.py	1980-01-01 01:00:00.000000000 -0700
++++ b/lib/third_party/dns/namedict.py	2022-02-03 18:13:23.113987963 -0700
+@@ -32,7 +32,14 @@
+ from ._compat import xrange
+ 
+ 
+-class NameDict(collections.MutableMapping):
++try:
++  # Python 3.3 and above.
++  collections_abc = collections.abc
++except AttributeError:
++  collections_abc = collections
++
++
++class NameDict(collections_abc.MutableMapping):
+     """A dictionary whose keys are dns.name.Name objects.
+ 
+     In addition to being like a regular Python dictionary, this
+diff -urN --color a/lib/third_party/frozendict/__init__.py b/lib/third_party/frozendict/__init__.py
+--- a/lib/third_party/frozendict/__init__.py	1980-01-01 01:00:00.000000000 -0700
++++ b/lib/third_party/frozendict/__init__.py	2022-02-03 18:13:23.113987963 -0700
+@@ -3,6 +3,12 @@
+ import functools
+ import sys
+ 
++try:
++  # Python 3.3 and above.
++  collections_abc = collections.abc
++except AttributeError:
++  collections_abc = collections
++
+ 
+ try:
+     from collections import OrderedDict
+@@ -13,7 +19,7 @@
+ iteritems = getattr(dict, 'iteritems', dict.items) # py2-3 compatibility
+ 
+ 
+-class frozendict(collections.Mapping):
++class frozendict(collections_abc.Mapping):
+     """
+     An immutable wrapper around dictionaries that implements the complete :py:class:`collections.Mapping`
+     interface. It can be used as a drop-in replacement for dictionaries where immutability is desired.
+diff -urN --color a/lib/third_party/functools32/functools32.py b/lib/third_party/functools32/functools32.py
+--- a/lib/third_party/functools32/functools32.py	1980-01-01 01:00:00.000000000 -0700
++++ b/lib/third_party/functools32/functools32.py	2022-02-03 18:13:23.113987963 -0700
+@@ -12,7 +12,7 @@
+            'total_ordering', 'cmp_to_key', 'lru_cache', 'reduce', 'partial']
+ 
+ from _functools import partial, reduce
+-from collections import MutableMapping, namedtuple
++from collections import namedtuple
+ from .reprlib32 import recursive_repr as _recursive_repr
+ from weakref import proxy as _proxy
+ import sys as _sys
+@@ -21,6 +21,11 @@
+ except ImportError:
+     from ._dummy_thread32 import allocate_lock as Lock
+ 
++try:
++    from collections.abc import MutableMapping
++except ImportError:
++    from collections import MutableMapping
++
+ ################################################################################
+ ### OrderedDict
+ ################################################################################
+diff -urN --color a/lib/third_party/ml_sdk/cloud/ml/prediction/prediction_utils.py b/lib/third_party/ml_sdk/cloud/ml/prediction/prediction_utils.py
+--- a/lib/third_party/ml_sdk/cloud/ml/prediction/prediction_utils.py	1980-01-01 01:00:00.000000000 -0700
++++ b/lib/third_party/ml_sdk/cloud/ml/prediction/prediction_utils.py	2022-02-03 18:13:23.113987963 -0700
+@@ -28,6 +28,13 @@
+ 
+ from tensorflow.python.framework import dtypes  # pylint: disable=g-direct-tensorflow-import
+ 
++try:
++  # Python 3.3 and above.
++  collections_abc = collections.abc
++except AttributeError:
++  collections_abc = collections
++
++
+ # --------------------------
+ # prediction.common
+ # --------------------------
+@@ -580,7 +587,7 @@
+   Raises:
+     ValueError if response_json is malformed.
+   """
+-  if not isinstance(response_json, collections.Mapping):
++  if not isinstance(response_json, collections_abc.Mapping):
+     raise ValueError(
+         "Invalid response received from prediction server: {}".format(
+             repr(response_json)))
+@@ -603,7 +610,7 @@
+   Raises:
+     ValueError if response_json is malformed.
+   """
+-  if not isinstance(response_json, collections.Mapping):
++  if not isinstance(response_json, collections_abc.Mapping):
+     raise ValueError(
+         "Invalid response received from prediction server: {}".format(
+             repr(response_json)))
+@@ -626,7 +633,7 @@
+   Raises:
+     ValueError if request_json is malformed.
+   """
+-  if not isinstance(request_json, collections.Mapping):
++  if not isinstance(request_json, collections_abc.Mapping):
+     raise ValueError("Invalid request sent to prediction server: {}".format(
+         repr(request_json)))
+   if INSTANCES_KEY not in request_json:
+diff -urN --color a/lib/third_party/prompt_toolkit/styles/from_dict.py b/lib/third_party/prompt_toolkit/styles/from_dict.py
+--- a/lib/third_party/prompt_toolkit/styles/from_dict.py	1980-01-01 01:00:00.000000000 -0700
++++ b/lib/third_party/prompt_toolkit/styles/from_dict.py	2022-02-03 18:13:23.113987963 -0700
+@@ -6,13 +6,17 @@
+ - Support for ANSI color names. (These will map directly to the 16 terminal
+   colors.)
+ """
+-from collections import Mapping
+-
+ from .base import Style, DEFAULT_ATTRS, ANSI_COLOR_NAMES
+ from .defaults import DEFAULT_STYLE_EXTENSIONS
+ from .utils import merge_attrs, split_token_in_parts
+ from six.moves import range
+ 
++
++try:
++    from collections.abc import Mapping
++except ImportError:
++    from collections import Mapping
++
+ __all__ = (
+     'style_from_dict',
+ )
+diff -urN --color a/platform/bq/bigquery_client.py b/platform/bq/bigquery_client.py
+--- a/platform/bq/bigquery_client.py	1980-01-01 01:00:00.000000000 -0700
++++ b/platform/bq/bigquery_client.py	2022-02-03 18:31:08.321051236 -0700
+@@ -47,6 +47,12 @@
+ import bq_flags
+ 
+ 
++try:
++    from collections.abc import Mapping
++except ImportError:
++    from collections import Mapping
++
++
+ # A unique non-None default, for use in kwargs that need to
+ # distinguish default from None.
+ _DEFAULT = object()
+@@ -6758,7 +6764,7 @@
+   def __init__(self, *unused_args, **unused_kwds):
+     raise NotImplementedError('Cannot instantiate static class ApiClientHelper')
+ 
+-  class Reference(collections.Mapping):
++  class Reference(Mapping):
+     """Base class for Reference objects returned by apiclient."""
+     _required_fields = frozenset()
+     _optional_fields = frozenset()
+diff -urN --color a/platform/gsutil/gslib/vendored/boto/boto/dynamodb/types.py b/platform/gsutil/gslib/vendored/boto/boto/dynamodb/types.py
+--- a/platform/gsutil/gslib/vendored/boto/boto/dynamodb/types.py	1980-01-01 01:00:00.000000000 -0700
++++ b/platform/gsutil/gslib/vendored/boto/boto/dynamodb/types.py	2022-02-03 18:13:23.113987963 -0700
+@@ -27,11 +27,17 @@
+ import base64
+ from decimal import (Decimal, DecimalException, Context,
+                      Clamped, Overflow, Inexact, Underflow, Rounded)
+-from collections import Mapping
+ from boto.dynamodb.exceptions import DynamoDBNumberError
+ from boto.compat import filter, map, six, long_type
+ 
+ 
++
++try:
++    from collections.abc import Mapping
++except ImportError:
++    from collections import Mapping
++
++
+ DYNAMODB_CONTEXT = Context(
+     Emin=-128, Emax=126, rounding=None, prec=38,
+     traps=[Clamped, Overflow, Inexact, Rounded, Underflow])
+diff -urN --color a/platform/gsutil/gslib/vendored/boto/boto/mws/connection.py b/platform/gsutil/gslib/vendored/boto/boto/mws/connection.py
+--- a/platform/gsutil/gslib/vendored/boto/boto/mws/connection.py	1980-01-01 01:00:00.000000000 -0700
++++ b/platform/gsutil/gslib/vendored/boto/boto/mws/connection.py	2022-02-03 18:13:23.113987963 -0700
+@@ -29,6 +29,13 @@
+ from boto.handler import XmlHandler
+ from boto.compat import filter, map, six, encodebytes
+ 
++try:
++  # Python 3.3 and above.
++  collections_abc = collections.abc
++except AttributeError:
++  collections_abc = collections
++
++
+ __all__ = ['MWSConnection']
+ 
+ api_version_path = {
+@@ -109,7 +116,7 @@
+ def destructure_object(value, into, prefix, members=False):
+     if isinstance(value, boto.mws.response.ResponseElement):
+         destructure_object(value.__dict__, into, prefix, members=members)
+-    elif isinstance(value, collections.Mapping):
++    elif isinstance(value, collections_abc.Mapping):
+         for name in value:
+             if name.startswith('_'):
+                 continue

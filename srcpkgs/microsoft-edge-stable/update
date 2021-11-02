@@ -1,0 +1,2 @@
+site=https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/
+pattern='href="microsoft-edge-stable_\K[\d\.]+(?=-1_amd64\.deb")'
