@@ -1,6 +1,6 @@
 # Template file for 'microsoft-edge-stable'
 pkgname=microsoft-edge-stable
-version=127.0.2651.105
+version=128.0.2739.42
 revision=1
 archs="x86_64"
 hostmakedepends="bsdtar tar xz"
@@ -10,7 +10,7 @@ maintainer="Zach Dykstra <dykstra.zachary@gmail.com>"
 license="custom:Proprietary"
 homepage="https://www.microsoftedgeinsider.com/en-us/"
 distfiles="https://packages.microsoft.com/repos/edge/pool/main/m/${pkgname}/${pkgname}_${version}-1_amd64.deb"
-checksum=16fa81a3296ef1e5efe7097cb6dc66b2aac1904ccc2f6b90a7145bfa892511a9
+checksum=0307595f6127b36fab8472d857479f62c5d8053b366b9ec7c86cf693e20331e4
 restricted=yes
 repository="nonfree"
 nopie=yes
