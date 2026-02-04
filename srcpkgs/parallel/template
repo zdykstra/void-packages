@@ -11,7 +11,7 @@ maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="GPL-3.0-or-later"
 homepage="https://www.gnu.org/software/parallel/"
 distfiles="${GNU_SITE}/${pkgname}/${pkgname}-${version}.tar.bz2"
-checksum=3a62cf79ac2488b41e7781d54ff1fdaa1c526b72e097dd1e7d62ef7abb9d6c3b
+checksum=831f78e01f3f28ac2441e66b10171562c71a0300353893aa05bbc277f13cc596
 
 pre_configure() {
 	# no html and pdf doc
