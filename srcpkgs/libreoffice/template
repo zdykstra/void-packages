@@ -14,7 +14,7 @@ _xdeps="zlib-devel libjpeg-turbo-devel clucene-devel expat-devel xmlsec1-devel
  libe-book-devel libabw-devel libpagemaker-devel libqxp-devel libzmf-devel
  libstaroffice-devel lcms2-devel libcppunit-devel freetype-devel libxslt-devel
  libgcrypt-devel libxml2-devel python3-devel libcurl-devel boost-devel-minimal
- libboost_locale libeot-devel
+ libeot-devel libmd4c-devel sqlite-devel libzstd-devel liblzma-devel
  mdds frozen glm unixodbc-devel libldap-devel sane-devel icu-devel liborcus-devel
  graphite-devel harfbuzz-devel libargon2-devel redland-devel hunspell-devel
  zxcvbn-c-devel zxing-cpp-devel box2d-devel hyphen-devel mythes-devel
