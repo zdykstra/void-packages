@@ -13,6 +13,10 @@ changelog="https://github.com/jdx/mise/releases"
 distfiles="https://github.com/jdx/mise/archive/v${version}.tar.gz>${pkgname}-${version}.tar.gz"
 checksum=e6f47591e3bf3d5b8763aeb47df52687cc3308fbfb0f32d25b691efc31b3249c
 
+case "$XBPS_TARGET_MACHINE" in
+	i686*) broken="runs out of memory" ;;
+esac
+
 post_install() {
 	vlicense LICENSE
 	vman man/man1/mise.1
