@@ -8,7 +8,7 @@ configure_args="-DSDL3_INCLUDE_DIRS=${XBPS_CROSS_BASE}/usr/include/SDL3
 hostmakedepends="pkg-config"
 makedepends="SDL3-devel"
 short_desc="Accuracy-focused XAudio reimplementation for open platforms"
-maintainer="Franc[e]sco <lolisamurai@tfwno.gf>"
+maintainer="Orphaned <orphan@voidlinux.org>"
 license="Zlib"
 homepage="https://github.com/FNA-XNA/FAudio"
 distfiles="https://github.com/FNA-XNA/FAudio/archive/${version}.tar.gz"
